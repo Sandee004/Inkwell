@@ -1,0 +1,34 @@
+ /* @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@1,9..40,300&display=swap');
+
+body{
+    background-image: url(image.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap');
+body{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    background: purple;
+    font-weight: bold;
+}
+
+p {
+    text-align: center;
+    animation-name: floatIn;
+    animation-duration: 3s;
+    font-size: 25px;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
