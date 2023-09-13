@@ -1,12 +1,16 @@
 from flask import Flask, render_template, flash, request, redirect, session, url_for
+from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 app.secret_key = "hello"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 db = SQLAlchemy(app)
+
 
 class User(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
@@ -19,10 +23,12 @@ class User(db.Model):
         self.email = email
         self.password = password
 
+
 @app.route('/')
 def main():
     return render_template('hello.html')
-    
+
+
 @app.route('/register', methods=["POST", "GET"])
 def register():
     if request.method == "POST":
@@ -41,12 +47,16 @@ def register():
         flash("Email is already in use.")
     return render_template('register.html')
 
+
 @app.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        user=User.query.filter_by(username=username).first()
+        #print(f"Username: {username}")
+        #print(f"Password: {password}")
+        user = User.query.filter_by(username=username).first()
+        #print(f"User: {user}")
         if user and user.password == password:
             session["logged_in"] = True
             return redirect(url_for("homepage"))
@@ -55,7 +65,8 @@ def login():
             return redirect(url_for("login"))
     else:
         return render_template("login.html")
-    
+
+
 @app.route('/profiles', methods=["GET", "POST"])
 def profiles():
     if request.method == "POST":
@@ -73,12 +84,14 @@ def profiles():
         users = User.query.all()
         return render_template('profiles.html', users=users)
 
+
 @app.route('/homepage')
 def homepage():
-    if not session.get("logged_in"):
+    if not session.get("logged_in", False):
         return redirect(url_for("login"))
     return render_template("homepage.html")
-    
+
+
 if __name__ == "__main__":
     with app.app_context():
         # Create the tables

@@ -1,0 +1,10 @@
+.poetry.lock
+.pyproject.toml
+.replit.nix
+venv
+.git
+.config
+.ump
+flask_session
+.pythonlibs
+.users.sqlite3

@@ -13,7 +13,7 @@ body{
     align-items: center;
     font-family: 'Roboto', sans-serif;
     color: white;
-    background: purple;
+    background: #512888;
     font-weight: bold;
 }
 
@@ -31,4 +31,7 @@ p {
   to {
     opacity: 1;
   }
+}
+ul{
+    list-style-type: none;
 }

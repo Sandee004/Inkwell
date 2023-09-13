@@ -10,7 +10,7 @@ body{
     align-items: center;
     justify-content: center;
 }
-h1{
+h1, h3{
     text-align: center;
     margin: 90px auto 30px;
     color: white;
@@ -29,4 +29,11 @@ input{
     font-size: 17px;
     width: 40%;
     background-color: pink;
+}
+ul{
+    list-style-type: none;
+}
+a{
+    color: pink;
+    text-decoration: none;
 }
