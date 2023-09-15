@@ -5,10 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='register.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homepage.css') }}">
 </head>
 <body>
-    <h3>You made it to homepage without errors!!😭 Thank God</h3>
+    <h2>Inkwell</h2>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    
+    <div class="entries">
+        {% for entry in entries %}
+            <div class="entry">
+                <h3>{{ entry.title }}</h3>
+                <!--p>{{ entry.content }}</p-->
+                <p class="timestamp">{{ entry.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+                <form method="POST" action="{{ url_for('homepage') }}">
+                    <input type="hidden" name="entry_id" value="{{ entry.id }}">
+                    <input type="submit" name="delete" value="Delete">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+    <a href="{{url_for('create_entry')}}">Create New Entry</a>
     <a href="{{url_for('register')}}">Logout</a>
 
 </body>

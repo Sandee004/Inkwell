@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='create_entries.css') }}">
+</head>
+<body>
+    <h3>Inkwell</h3>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    
+    <form method="POST" action="{{url_for('create_entry')}}">
+        <input type="text" name="title" required placeholder="Title">
+        <textarea name="content" id="content" required placeholder="Details here"></textarea>
+        <p><input type="submit" name="create" value="Create"></p>
+    </form>
+
+    <p>Already have a profile? <a href="{{url_for('homepage')}}">Log In</a></p>
+    
+</body>
