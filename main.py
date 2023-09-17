@@ -1,8 +1,8 @@
-from flask import Flask, render_template, flash, request, redirect, session, url_for
+from flask import Flask, render_template, flash, request, redirect, url_for, make_response
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
-from datetime import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = "hello"
@@ -76,9 +76,10 @@ def login():
         user = User.query.filter_by(username=username).first()
         
         if user and user.password == password:
-            session["logged_in"] = True
-            session["user_id"] = user.id
-            return redirect(url_for("homepage"))
+            response = make_response(redirect(url_for("homepage")))
+            expiration = datetime.now() + timedelta(minutes=8)
+            response.set_cookie("user_id", str(user.id), expires=expiration, httponly=True)
+            return response
         else:
             flash("Invalid credentials")
             return redirect(url_for("login"))
@@ -106,7 +107,8 @@ def profiles():
 
 @app.route('/homepage', methods=["GET", "POST"])
 def homepage():
-    if not session.get("logged_in", False):
+    user_id = request.cookies.get("user_id")
+    if not user_id:
         return redirect(url_for("login"))
 
     if request.method == "POST":
@@ -114,8 +116,7 @@ def homepage():
         if entry_id:
             entry = Entry.query.get(entry_id)
             if entry:
-                user_id = session["user_id"]
-                if entry.user_id == user_id:
+                if entry.user_id == int(user_id):
                     db.session.delete(entry)
                     db.session.commit()
                     flash("Entry deleted successfully")
@@ -124,68 +125,35 @@ def homepage():
             else:
                 flash("Entry not found")
 
-    user_id = session["user_id"]
     entries = Entry.query.filter_by(user_id=user_id).order_by(Entry.created_at.desc()).all()
     return render_template("homepage.html", entries=entries)
 
 
 @app.route('/create', methods=["POST", "GET"])
 def create_entry():
-    if not session.get("logged_in", False):
+    user_id = request.cookies.get("user_id")
+    if not user_id:
         return redirect(url_for("login"))
 
     if request.method == "POST":
         title = request.form.get("title")
         content = request.form.get("content")
-        user_id = session["user_id"]
+        user_id = int(user_id)
         new_entry = Entry(title=title, content=content, user_id=user_id)
         db.session.add(new_entry)
         db.session.commit()
 
         flash("Entry saved")
         return redirect(url_for("homepage"))
+
+    return render_template('create-entries.html')
+
+@app.route('/logout')
+def logout():
+    response = make_response(redirect(url_for("login")))
+    response.delete_cookie("user_id")
+    return response
     
-    return render_template('create-entries.html')
-"""
-@app.route('/homepage', methods=["GET", "POST"])
-def homepage():
-    if not session.get("logged_in", False):
-        return redirect(url_for("login"))
-
-    if request.method == "POST":
-        entry_id = request.form.get("entry_id")
-        if entry_id:
-            entry = Entry.query.get(entry_id)
-            if entry:
-                user_id = session["user_id"]
-                if entry.user_id == user_id:
-                    db.session.delete(entry)
-                    db.session.commit()
-                    flash("Entry deleted successfully")
-                else:
-                    flash("You are not authorized to delete this entry")
-            else:
-                flash("Entry not found")
-
-    user_id = session["user_id"]
-    entries = Entry.query.filter_by(user_id=user_id).order_by(Entry.created_at.desc()).all()
-    return render_template("homepage.html", entries=entries)
-
-@app.route('/create', methods=["POST", "GET"])
-def create_entry():
-    if request.method == "POST":
-        title = request.form.get("title")
-        content = request.form.get("content")
-        user_id = session["user_id"]
-        new_entry = Entry(title=title, content=content, user_id=user_id)
-        db.session.add(new_entry)
-        db.session.commit()
-        
-        flash("Entry saved")
-        return redirect(url_for("homepage"))
-    return render_template('create-entries.html')
-"""
-
 if __name__ == "__main__":
     with app.app_context():
         # Create the tables

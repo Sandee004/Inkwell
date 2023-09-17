@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='create_entries.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='create-entries.css') }}">
 </head>
 <body>
-    <h3>Inkwell</h3>
+    <h2>Inkwell</h2>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul class="flash-messages">
@@ -25,6 +25,6 @@
         <p><input type="submit" name="create" value="Create"></p>
     </form>
 
-    <p>Already have a profile? <a href="{{url_for('homepage')}}">Log In</a></p>
+    <p><a href="{{url_for('homepage')}}">Back</a></p>
     
 </body>

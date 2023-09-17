@@ -21,10 +21,10 @@
     {% endwith %}
     
     <div class="entries">
+        <h3>My Entries</h3>
         {% for entry in entries %}
             <div class="entry">
-                <h3>{{ entry.title }}</h3>
-                <!--p>{{ entry.content }}</p-->
+                <h4><a href="{{url_for('create_entry', entry_id=entry_id)}}">{{ entry.title }}</h4>
                 <p class="timestamp">{{ entry.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</p>
                 <form method="POST" action="{{ url_for('homepage') }}">
                     <input type="hidden" name="entry_id" value="{{ entry.id }}">
@@ -34,6 +34,6 @@
         {% endfor %}
     </div>
     <a href="{{url_for('create_entry')}}">Create New Entry</a>
-    <a href="{{url_for('register')}}">Logout</a>
+    <a href="/logout">Logout</a>
 
 </body>
