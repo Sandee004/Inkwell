@@ -129,8 +129,10 @@ def homepage():
     return render_template("homepage.html", entries=entries)
 
 
-@app.route('/create', methods=["POST", "GET"])
-def create_entry():
+
+@app.route('/create_entry', methods=["POST", "GET"])
+@app.route('/create_entry/<int:entry_id>', methods=["POST", "GET"])
+def create_entry(entry_id=None):
     user_id = request.cookies.get("user_id")
     if not user_id:
         return redirect(url_for("login"))
@@ -139,14 +141,33 @@ def create_entry():
         title = request.form.get("title")
         content = request.form.get("content")
         user_id = int(user_id)
-        new_entry = Entry(title=title, content=content, user_id=user_id)
-        db.session.add(new_entry)
-        db.session.commit()
 
-        flash("Entry saved")
-        return redirect(url_for("homepage"))
+        if entry_id:
+            entry = Entry.query.filter_by(id=entry_id, user_id=user_id).first()
+            if entry:
+                entry.title = title
+                entry.content = content
+                db.session.commit()
+                flash("Entry updated successfully")
+                return redirect(url_for("homepage"))
+            else:
+                flash("Entry not found")
+        else:
+            new_entry = Entry(title=title, content=content, user_id=user_id)
+            db.session.add(new_entry)
+            db.session.commit()
+            flash("Entry saved")
+            return redirect(url_for("homepage"))
+
+    if entry_id is not None:
+        entry = Entry.query.filter_by(id=entry_id, user_id=user_id).first()
+        if entry:
+            return render_template("create-entries.html", entry=entry)
+        else:
+            flash("Entry not found")
 
     return render_template('create-entries.html')
+
 
 @app.route('/logout')
 def logout():
