@@ -1,38 +1,96 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap');
-body{
-    background-color: #512888;
-    font-family: 'Roboto';
+
+body {
+  background-color: #512888;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  text-align: center;
+}
+
+h2 {
+  margin: 90px auto 30px;
+}
+
+.entries {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.entry {
+  width: 70%;
+  height: 120px;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  text-align: center;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.entry h4 {
+  margin-top: 10px;
+}
+
+.entry .timestamp {
+  margin-top: 1px;
+}
+
+.entry form {
+  margin-top: 10px;
+}
+
+.entry form input[type="submit"] {
+  font-size: 17px;
+  background-color: #512888;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 3px;
+  padding: 7px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.entry form input[type="submit"]:hover {
+  background-color: transparent;
+  border: 2px solid pink;
+}
+.entry a {
+  color: black;
+  text-decoration: none;
+}
+
+a {
+  color: white;
+  display: block;
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.create-entry-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 3px;
+  background-color: pink;
+  color: black;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  transition: background-color 0.3s, border 0.3s;
+}
+
+.create-entry-btn:hover {
+  background-color: transparent;
+  border: 2px solid pink;
     color: white;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-}
-h2{
-    text-align: center;
-    margin: 90px auto 30px;
-    color: white;
-}
-input{
-    font-size: 17px;
-    width: 40%;
-    background-color: pink;
-    border-radius: 4px;
-    padding: 3px 5px;
-    text-align: center;
-    border: none;
-    outline: none;
-}
-.entry{
-    width: 70%;
-    height: 120px;
-    padding 10px auto;
-    background-color: white;
-    color: black;
-    text-align: center;
-    border-radius: 4px;
-    
-}
-a{
-    color: black;
-    text-decoration: none;
-}
+      }

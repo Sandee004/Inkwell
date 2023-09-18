@@ -81,7 +81,7 @@ def login():
         
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password):
             response = make_response(redirect(url_for("homepage")))
-            expiration = datetime.now() + timedelta(minutes=8)
+            expiration = datetime.now() + timedelta(minutes=15)
             response.set_cookie("user_id", str(user.id), expires=expiration, httponly=True)
             return response
         else:

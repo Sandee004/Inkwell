@@ -31,6 +31,7 @@ textarea{
     width: 80%;
     margin: 10px auto;
     font-size: 18px;
+  font-family: 'Roboto', sans-serif;
 }
 input[type="text"]:focus, textarea:focus{
     border: 1.5px solid pink;
@@ -47,7 +48,6 @@ input[type="submit"] {
     margin: auto auto;
     font-size: 17px;
 }
-input::fo
 p {
   text-align: center;
   margin-top: 20px;
