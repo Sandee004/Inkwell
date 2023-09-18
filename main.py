@@ -3,6 +3,8 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime, timedelta
+import bcrypt
+#from sqlalchemy.orm import Session
 
 app = Flask(__name__)
 app.secret_key = "hello"
@@ -50,13 +52,14 @@ def register():
         name = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
+        mask = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
         existing_user= User.query.filter_by(username=name).first()
         if existing_user:
             flash("Username is already taken")
             return redirect(url_for('register'))
             
-        new_user = User(username=name, email=email, password=password)
+        new_user = User(username=name, email=email, password=mask)
         try:
             db.session.add(new_user)
             db.session.commit()
@@ -73,9 +76,10 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
+        #maskchk = password.encode('utf-8')
         user = User.query.filter_by(username=username).first()
         
-        if user and user.password == password:
+        if user and bcrypt.checkpw(password.encode('utf-8'), user.password):
             response = make_response(redirect(url_for("homepage")))
             expiration = datetime.now() + timedelta(minutes=8)
             response.set_cookie("user_id", str(user.id), expires=expiration, httponly=True)
@@ -92,6 +96,8 @@ def profiles():
     if request.method == "POST":
         user_id = request.form.get("user_id")
         user = User.query.get(user_id)
+        #session = Session()
+        #user = session.get(User, user_id)
         if user:
             db.session.delete(user)
             db.session.commit()
