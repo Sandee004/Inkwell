@@ -22,14 +22,25 @@
     <form method="POST" onsubmit="return validateForm(event)">
         <input type="text" name="username" required placeholder="Username">
         <input name="email" type="email" required placeholder="Email here">
-        <input name="password" type="password" required placeholder="Password">
-        <input name="confirm" type="password" required placeholder="Confirm Password">
+        <input name="password" type="password" id="password" required placeholder="Password">
+        <input name="confirm" type="password" id="confirm-password" required placeholder="Confirm Password">
         
-        <p><input type="submit" name="submit" value="Submit" id="button"></p>
+        <input type="submit" name="submit" value="Submit" id="button">
     </form>
 
     <p>Already have a profile? <a href="{{url_for('login')}}">Log In</a></p>
-    <!--p>Profiles created: <a href="{{url_for('profiles')}}">here</a></p-->
-    <script src="{{ url_for('static', filename='register.js') }}"></script>
+    <script>
+        function validateForm(event) {
+            var password = document.getElementById("password").value;
+            var confirm = document.getElementById("confirm-password").value;
+
+            if (password !== confirm) {
+                alert("Password and Confirm Password do not match.");
+                event.preventDefault(); // Prevent form submission
+                return false;
+            }
+            return true;
+        }
+    </script>
     
 </body>

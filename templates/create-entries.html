@@ -19,11 +19,6 @@
         {% endif %}
     {% endwith %}
     
-    <!--form method="POST" action="{{url_for('create_entry', entry_id=entry.id if entry else None)}}">
-        <input type="text" name="title" required placeholder="Title">
-        <textarea name="content" id="content" required placeholder="Details here"></textarea>
-        <p><input type="submit" name="create" value="Create"></p>
-    </form-->
     <form method="POST" action="{{ url_for('create_entry', entry_id=entry.id if entry else None) }}">
         <input type="text" name="title" required placeholder="Title" value="{{ entry.title if entry else '' }}">
         <textarea name="content" id="content" required placeholder="Details here">{{ entry.content if entry else '' }}</textarea>

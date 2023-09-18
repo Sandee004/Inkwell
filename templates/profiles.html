@@ -4,13 +4,17 @@
         <div class="profile">
             <p>Username: {{ user.username }}</p>
             <p>Email: {{ user.email }}</p>
-            <p>Password: {{user.password }}</p>
+            <p>Password: {{ user.password }}</p>
             <form method="POST" action="{{ url_for('profiles') }}">
+                <!-- Include the CSRF token -->
+                {% raw %}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                {% endraw %}
                 <input type="hidden" name="user_id" value="{{ user.id }}">
                 <button type="submit">Delete</button>
             </form>
         </div>
     {% endfor %}
     
-    <p><a href="{{url_for('register')}}">Back</a></p>
+    <p><a href="{{ url_for('register') }}">Back</a></p>
 </body>
