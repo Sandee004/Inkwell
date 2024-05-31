@@ -1,9 +1,20 @@
-from flask import Flask, render_template, flash, request, redirect, url_for, make_response
-from flask_session import Session
+from datetime import datetime, timedelta
+
+import bcrypt
+from flask import (
+    Flask,
+    flash,
+    make_response,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
-from datetime import datetime, timedelta
-import bcrypt
+
+from flask_session import Session
+
 #from sqlalchemy.orm import Session
 
 app = Flask(__name__)
@@ -76,7 +87,6 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        #maskchk = password.encode('utf-8')
         user = User.query.filter_by(username=username).first()
         
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password):
