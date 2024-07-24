@@ -1,5 +1,9 @@
 { pkgs }: {
-  deps = [pkgs.mailutils
+  deps = [
+    pkgs.cargo
+    pkgs.rustc
+    pkgs.libiconv
+    pkgs.cargopkgs.mailutils
 
   ];
 }

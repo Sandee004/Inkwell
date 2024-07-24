@@ -2,6 +2,7 @@
 body{
     min-height: 100vh;
     display: flex;
+  flex-flow: column;
     justify-content: center;
     align-items: center;
     font-family: 'Roboto', sans-serif;
@@ -15,6 +16,11 @@ p {
     animation-name: floatIn;
     animation-duration: 3s;
     font-size: 25px;
+}
+
+img{
+  width: 130px;
+  height: 130px;
 }
 
 @keyframes floatIn {
